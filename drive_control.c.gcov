@@ -1,0 +1,66 @@
+        -:    0:Source:drive_control.c
+        -:    0:Graph:drive_control.gcno
+        -:    0:Data:drive_control.gcda
+        -:    0:Runs:1
+        -:    0:Programs:1
+        -:    1:#include "drive_control.h"
+        -:    2:#include <stdio.h>
+        -:    3:
+        2:    4:ModbusStatus_t Send_Pan_Command(uint16_t cmd)
+        -:    5:{
+        2:    6:    return MODBUS_UDP_Write(DRIVE_IP_ADDR, DRIVE_PORT_UDP, REG_PAN_CONTROL, cmd);
+        -:    7:}
+        -:    8:
+        2:    9:ModbusStatus_t Send_Tilt_Command(uint16_t cmd)
+        -:   10:{
+        2:   11:    return MODBUS_UDP_Write(DRIVE_IP_ADDR, DRIVE_PORT_UDP, REG_TILT_CONTROL, cmd);
+        -:   12:}
+        -:   13:/*----------------------------------------------------------
+        -:   14: * PARK MOTION FUNCTION
+        -:   15: *----------------------------------------------------------*/
+        1:   16:ModbusStatus_t Drive_ParkMotion(void)
+        -:   17:{
+        -:   18:    ModbusStatus_t status;
+        -:   19:
+        1:   20:    printf(" Starting PARK motion for Pan and Tilt...\n");
+        -:   21:
+        -:   22:    /* 1️⃣ Send PARK command (or target position) */
+        1:   23:    status = MODBUS_UDP_Write(DRIVE_IP_ADDR, DRIVE_PORT_UDP, REG_PAN_PARK_POS, 0x0000U);
+        1:   24:    if (status != MODBUS_OK)
+        -:   25:    {
+    #####:   26:        printf(" Failed to set Pan park target.\n");
+    #####:   27:        return MODBUS_ERROR;
+        -:   28:    }
+        -:   29:
+        1:   30:    status = MODBUS_UDP_Write(DRIVE_IP_ADDR, DRIVE_PORT_UDP, REG_TILT_PARK_POS, 0x0000U);
+        1:   31:    if (status != MODBUS_OK)
+        -:   32:    {
+    #####:   33:        printf(" Failed to set Tilt park target.\n");
+    #####:   34:        return MODBUS_ERROR;
+        -:   35:    }
+        -:   36:
+        -:   37:    /* 2️⃣ Send START PARK command to both motors */
+        1:   38:    (void)Send_Pan_Command(CMD_START_PARK);
+        1:   39:    (void)Send_Tilt_Command(CMD_START_PARK);
+        -:   40:
+        -:   41:    /* 3️⃣ Wait for motion to complete (poll until stopped) */
+        1:   42:    uint32_t pan_speed = 0U, tilt_speed = 0U;
+        4:   43:    for (int i = 0; i < 50; i++) /* 5 seconds total at 100ms each */
+        -:   44:    {
+        4:   45:        (void)MODBUS_UDP_Read(DRIVE_IP_ADDR, DRIVE_PORT_UDP, REG_PAN_SPEED, 1U, &pan_speed);
+        4:   46:        (void)MODBUS_UDP_Read(DRIVE_IP_ADDR, DRIVE_PORT_UDP, REG_TILT_SPEED, 1U, &tilt_speed);
+        -:   47:
+        4:   48:        printf(" Pan speed=%lu | Tilt speed=%lu\r", 
+        -:   49:               (unsigned long)pan_speed, (unsigned long)tilt_speed);
+        4:   50:        Sleep(100); /* 100ms delay */
+        -:   51:
+        4:   52:        if ((pan_speed == 0U) && (tilt_speed == 0U))
+        -:   53:        {
+        1:   54:            printf("\n Both motors parked successfully!\n");
+        1:   55:            return MODBUS_OK;
+        -:   56:        }
+        -:   57:    }
+        -:   58:
+    #####:   59:    printf("\n Timeout: motors did not stop within limit.\n");
+    #####:   60:    return MODBUS_ERROR;
+        -:   61:}
