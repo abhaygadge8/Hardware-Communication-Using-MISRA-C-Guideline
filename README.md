@@ -21,23 +21,38 @@ It provides a command-line interface (CLI) to control both motors, read feedback
 
 ## 🧩 Project Structure
 ```
+Hardware Communication/
+│
 ├── include/
 │ ├── config.h
 │ ├── drive_control.h
 │ ├── drive_feedback.h
-│ ├── modbus_udp.h
-│ └── limit_angle.h
+│ ├── limit_angle.h
+│ └── modbus_udp.h
 │
 ├── src/
-│ ├── main.c
 │ ├── drive_control.c
 │ ├── drive_feedback.c
-│ ├── modbus_udp.c
-│ └── limit_angle.c
+│ ├── limit_angle.c
+│ ├── main.c
+│ └── modbus_udp.c
 │
-├── build/
+├── test/
+│ ├── test_drive_control.c
+│ ├── test_drive_control.exe
+│ ├── test_drive_feedback.c
+│ ├── test_drive_feedback.exe
+│ ├── test_limit_angle.c
+│ ├── test_limit_angle.exe
+│ ├── test_modbus_udp.exe
+│ ├── unity.c
+│ ├── unity.h
+│ └── unity_internals.h
 │
-├── Makefile
+├── drive_control.c.gcov
+├── dual_axis_app.exe
+├── makefile
+└── wcs_cmd_eth.exe
 └── README.md
 ```
 ---
