@@ -74,8 +74,8 @@ It provides a command-line interface (CLI) to control both motors, read feedback
 | `Makefile`                | Automates build and clean operations               |
 
 ## Developer Notes
-Ensure the drive controllers and PC are on the same subnet.
-Adjust encoder scaling or gearbox ratio in feedback logic if required.
-Limit switch readings are safety-critical — test carefully before operation.
-For continuous control, integrate a real-time task or event loop.
+- Ensure the drive controllers and PC are on the same subnet.
+- Adjust encoder scaling or gearbox ratio in feedback logic if required.
+- Limit switch readings are safety-critical — test carefully before operation.
+- For continuous control, integrate a real-time task or event loop.
 
