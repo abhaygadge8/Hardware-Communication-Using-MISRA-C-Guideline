@@ -20,6 +20,7 @@ It provides a command-line interface (CLI) to control both motors, read feedback
 ---
 
 ## 🧩 Project Structure
+```
 ├── include/
 │ ├── config.h
 │ ├── drive_control.h
@@ -38,6 +39,7 @@ It provides a command-line interface (CLI) to control both motors, read feedback
 │
 ├── Makefile
 └── README.md
+```
 ---
 
 ##  Requirements
