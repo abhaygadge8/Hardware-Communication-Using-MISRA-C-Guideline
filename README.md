@@ -101,17 +101,17 @@ Use GCC:
 
 ```sh
 gcc main.c modbus_functions.c drive_feedback.c drive_parameters.c drive_command.c -lws2_32 -o drive_control.exe
-
+```
 ---
 ## 🔥 Modbus RTU-UDP Simulator Explanation
 The simulator:
-Implements RTU frames (CRC16, no MBAP header)
-Supports ALL registers from your config.h
-Responds to reads and writes
-Maintains internal register database
-Fully compatible with your C program
-To modify simulator values, simply edit the dictionary in:
-rtu_udp_server.py → init_registers()
+- Implements RTU frames (CRC16, no MBAP header)
+- Supports ALL registers from your config.h
+- Responds to reads and writes
+- Maintains internal register database
+- Fully compatible with your C program
+- To modify simulator values, simply edit the dictionary in:
+- rtu_udp_server.py → init_registers()
 ---
 
 ## 🧪 Testing Without Hardware
