@@ -101,3 +101,25 @@ Use GCC:
 
 ```sh
 gcc main.c modbus_functions.c drive_feedback.c drive_parameters.c drive_command.c -lws2_32 -o drive_control.exe
+
+---
+## 🔥 Modbus RTU-UDP Simulator Explanation
+The simulator:
+Implements RTU frames (CRC16, no MBAP header)
+Supports ALL registers from your config.h
+Responds to reads and writes
+Maintains internal register database
+Fully compatible with your C program
+To modify simulator values, simply edit the dictionary in:
+rtu_udp_server.py → init_registers()
+---
+
+## 🧪 Testing Without Hardware
+- This project is designed to run even with no real motor drive.
+- The Python simulator mimics a real dual-axis servo drive:
+- Sends real-looking feedback
+- Accepts write commands
+- Updates internal registers
+- Supports CRC
+- Uses the same registers as your drive
+---
