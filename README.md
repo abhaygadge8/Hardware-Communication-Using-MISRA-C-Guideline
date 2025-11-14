@@ -101,6 +101,20 @@ Use GCC:
 
 ```sh
 gcc main.c modbus_functions.c drive_feedback.c drive_parameters.c drive_command.c -lws2_32 -o drive_control.exe
+
+python rtu_udp_server.py
+🔥 FULL RTU-UDP Simulator running at 127.0.0.1:502
+✓ Works with your C program
+
+./drive_control.exe
+=============== DRIVE CONTROL MENU ===============
+1. Read Drive Feedback (0x04)
+2. Write Single Parameter (0x06)
+3. Write Multiple Parameters (0x10)
+4. Send Drive Command (0x06)
+5. Read Fault / Temperature / Fault Code
+6. Exit
+==================================================
 ```
 ---
 ## 🔥 Modbus RTU-UDP Simulator Explanation
