@@ -64,7 +64,7 @@
 #define REG_TILT_POS_MM           (916U)
 #define REG_TILT_RPM              (918U)
 #define REG_TILT_ACTUAL_CURRENT   (920U)
-#define REG_TILT_IO_STATUS        (422U)
+#define REG_TILT_IO_STATUS        (922U)
 #define REG_TILT_SYSTEM_STATUS    (924U)
 #define REG_TILT_DCBUS_VOLT       (926U)
 
@@ -130,3 +130,4 @@
 #define TILT_LIMIT_UP_MM        (50.0F)
 
 #endif /* CONFIG_H */
+
