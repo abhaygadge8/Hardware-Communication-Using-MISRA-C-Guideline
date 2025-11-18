@@ -105,14 +105,7 @@ int32_t MODBUS_ReadInput(uint8_t slave_id, uint16_t start_addr,
     printf("[MODBUS] Sending to %s:%d | Function 0x%02X | Addr: %u | Count: %u\n",
        DRIVE_IP_ADDR, DRIVE_PORT_UDP, tx_buf[1], start_addr, num_regs);
 
-    //return recvfrom(modbus_socket, (char *)rx_buf, 256, 0, NULL, NULL);
-    int len = recvfrom(modbus_socket, (char *)rx_buf, 256, 0, NULL, NULL);
-    printf("[MODBUS] Received %d bytes\n", len);
-    for (int i = 0; i < len; i++) { printf("%02X ", rx_buf[i]); }
-    printf("\n");
-    return len;
-
-    
+    return recvfrom(modbus_socket, (char *)rx_buf, 256, 0, NULL, NULL);  
 }
 
 /*----------------------------------------------------------
