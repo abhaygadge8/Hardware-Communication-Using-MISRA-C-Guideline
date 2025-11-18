@@ -42,5 +42,7 @@ float Read_DCBusVoltage(Axis_t axis);
 
 float Read_IOStatus(Axis_t axis);
 float Read_SystemStatus(Axis_t axis);
+void Read_IO_Status(Axis_t axis);
+
 
 #endif /* DRIVE_FEEDBACK_H */

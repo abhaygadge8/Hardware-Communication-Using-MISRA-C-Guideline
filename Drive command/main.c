@@ -20,7 +20,8 @@ static void PrintMainMenu(void)
     printf("3. Write Multiple Parameters (0x10)\n");
     printf("4. Send Drive Command (0x06)\n");
     printf("5. Read Fault / Temperature / Fault Code\n");
-    printf("6. Exit\n");
+    printf("6. Read IO Status (Inputs & Outputs)\n");
+    printf("7. Exit\n");
     printf("==================================================\n");
     printf("Enter choice: ");
 }
@@ -185,10 +186,18 @@ int main(void)
             case 3: Menu_SetMultiParameter(); break;
             case 4: Menu_SendCommand(); break;
             case 5: Menu_ReadFault(); break;
-            case 6: printf("Closing connection...\n"); break;
+            case 6:
+                {
+                printf("Select Axis (1=PAN, 2=TILT): ");
+                int ax;
+                scanf("%d", &ax);
+                Read_IO_Status((ax == 1) ? AXIS_PAN : AXIS_TILT);
+                break;
+                }
+            case 7: printf("Closing connection...\n"); break;
             default: printf("Invalid selection.\n"); break;
         }
-    } while (choice != 6);
+    } while (choice != 7);
 
     MODBUS_Close();
     printf("Drive Control Program Terminated.\n");

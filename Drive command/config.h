@@ -5,7 +5,7 @@
  * Network Configuration
  *===========================================================*/
 #define DRIVE_IP_ADDR        "127.0.0.1"
-#define DRIVE_PORT_UDP       (502U)
+#define DRIVE_PORT_UDP       (1502U)
 
 /*===========================================================
  * Modbus Protocol Constants
@@ -64,7 +64,7 @@
 #define REG_TILT_POS_MM           (916U)
 #define REG_TILT_RPM              (918U)
 #define REG_TILT_ACTUAL_CURRENT   (920U)
-#define REG_TILT_IO_STATUS        (922U)
+#define REG_TILT_IO_STATUS        (422U)
 #define REG_TILT_SYSTEM_STATUS    (924U)
 #define REG_TILT_DCBUS_VOLT       (926U)
 
@@ -106,5 +106,21 @@
 /* ---- TILT Axis ---- */
 #define REG_TILT_TEMP       (928U)
 #define REG_TILT_FAULT_CODE (930U)
+
+/*===========================================================
+ * Software Limit Settings (User Editable)
+ *===========================================================*/
+#define PAN_LIMIT_LEFT_DEG      (-90.0F)
+#define PAN_LIMIT_RIGHT_DEG     (90.0F)
+
+#define TILT_LIMIT_DOWN_DEG     (-30.0F)
+#define TILT_LIMIT_UP_DEG       (60.0F)
+
+/* Motor & Mechanical Specs */
+#define MAX_RPM        (3000.0F)
+#define DPMR_MM        (5.0F)      /* mm per one motor revolution */
+
+#define ACCEL_FACTOR   (1.5F)      /* or 2.0F depending on load */
+
 
 #endif /* CONFIG_H */

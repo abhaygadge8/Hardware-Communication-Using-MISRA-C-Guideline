@@ -1,5 +1,6 @@
 #include "config.h"
 #include "drive_feedback.h"
+#include "drive_command.h"
 #include "modbus_functions.h"
 #include <stdio.h>
 #include <stdint.h>
@@ -134,4 +135,66 @@ float Read_SystemStatus(Axis_t axis)
     /* Return as-is; user can decode system bits later */
     return (float)raw;
 }
+void Read_IO_Status(Axis_t axis)
+{
+    uint16_t addr = (axis == AXIS_PAN) ? REG_PAN_IO_STATUS : REG_TILT_IO_STATUS;
 
+    uint8_t rx_buf[16] = {0};
+    int len = MODBUS_ReadHolding(MODBUS_UNIT_ID, addr, 1, rx_buf);
+
+    if (len < 7)
+    {
+        printf("[ERROR] IO Status read failed! Len=%d\n", len);
+        return;
+    }
+
+    uint16_t io_raw = (rx_buf[3] << 8) | rx_buf[4];
+
+    uint8_t outputs = (io_raw >> 8) & 0xFF;  // CC Byte
+    uint8_t inputs  =  io_raw       & 0xFF;  // DD Byte
+
+    printf("\n====== IO STATUS (Reg %u) ======\n", addr);
+
+    printf("Raw: 0x%04X  (Outputs=0x%02X  Inputs=0x%02X)\n",
+            io_raw, outputs, inputs);
+
+    printf("\n--- INPUTS (DD Byte) ---\n");
+    for (int i = 0; i < 8; i++)
+    {
+        printf("Input-%d : %s\n", i+1,
+                (inputs & (1 << i)) ? "ACTIVE (1)" : "inactive (0)");
+    }
+
+    printf("\n--- OUTPUTS (CC Byte) ---\n");
+    for (int i = 0; i < 8; i++)
+    {
+        printf("Output-%d : %s\n", i+1,
+                (outputs & (1 << i)) ? "ACTIVE (1)" : "inactive (0)");
+    }
+
+    printf("=====================================\n");
+
+    /*
+     * ---------------------------------------------------------
+     *    LIMIT SWITCH MONITORING + AUTOMATIC EMERGENCY STOP
+     * ---------------------------------------------------------
+     */
+
+    // Define limit switch bits for your system  
+    const int LIMIT_LEFT_BIT  = 0;   // Input 1
+    const int LIMIT_RIGHT_BIT = 1;   // Input 2
+
+    // LEFT LIMIT
+    if (inputs & (1 << LIMIT_LEFT_BIT))
+    {
+        printf("  LEFT LIMIT HIT! Motor STOPPED.\n");
+        CMD_EStop(axis);
+    }
+
+    // RIGHT LIMIT
+    if (inputs & (1 << LIMIT_RIGHT_BIT))
+    {
+        printf("  RIGHT LIMIT HIT! Motor STOPPED.\n");
+        CMD_EStop(axis);
+    }
+}
